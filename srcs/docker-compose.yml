@@ -7,7 +7,7 @@ services:
       - mariadb
     ports:
       - "443:443"
-      - "80:80"
+      - "8080:8080"
     volumes:
       - wp_data:/var/www/html
     networks:
@@ -48,13 +48,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/manumart/Desktop/maneleh42/inception/data/web
+      device: /home/manumart/data/web
       o: bind
   db_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/manumart/Desktop/maneleh42/inception/data/database
+      device: /home/manumart/data/database
       o: bind
 
 networks:

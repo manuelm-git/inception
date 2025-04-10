@@ -1,7 +1,8 @@
 #!/bin/bash
+# filepath: /home/manumart/Desktop/maneleh42/inception/srcs/requirements/wordpress/script.sh
+
 cd /var/www/html
 
-# Debugging output
 echo "Starting WordPress setup script..."
 
 # Download wp-cli if not already present
@@ -11,7 +12,6 @@ if [ ! -f wp-cli.phar ]; then
     chmod +x wp-cli.phar
 fi
 
-# Debugging output
 echo "wp-cli.phar downloaded and ready."
 
 # Download WordPress core if not already present
@@ -26,32 +26,23 @@ if [ ! -f wp-config.php ]; then
         --allow-root
 fi
 
-# Debugging output
 echo "WordPress core downloaded and configured."
 
-# Install WordPress with the desired admin credentials
-echo "Installing WordPress..."
-./wp-cli.phar core install \
-    --url="${DOMAIN}" \
-    --title="inception" \
-    --admin_user="${WORDPRESS_ADMIN_USER}" \
-    --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
-    --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
-    --allow-root
-
-# Debugging output
-echo "WordPress installation complete."
-
-# Verify the admin user
-if ./wp-cli.phar user get "${WORDPRESS_ADMIN_USER}" --allow-root > /dev/null 2>&1; then
-    echo "Admin user '${WORDPRESS_ADMIN_USER}' successfully created."
+# Install WordPress if not already installed
+if ! ./wp-cli.phar core is-installed --allow-root; then
+    echo "Installing WordPress..."
+    ./wp-cli.phar core install \
+        --url="${DOMAIN}" \
+        --title="inception" \
+        --admin_user="${WORDPRESS_ADMIN_USER}" \
+        --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
+        --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
+        --allow-root
 else
-    echo "Failed to create admin user '${WORDPRESS_ADMIN_USER}'."
-    exit 1
+    echo "WordPress is already installed."
 fi
 
-# Debugging output
-echo "Admin user setup complete."
+echo "WordPress installation complete."
 
-# Start PHP-FPM
-php-fpm8.2 -F
+# Start PHP-FPM in the foreground
+exec php-fpm8.2 -F
