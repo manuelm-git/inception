@@ -44,5 +44,8 @@ fi
 
 echo "WordPress installation complete."
 
+# Ensure the /run/php directory exists
+mkdir -p /run/php
+
 # Start PHP-FPM in the foreground
-exec php-fpm8.2 -F
+exec php-fpm7.4 -F
