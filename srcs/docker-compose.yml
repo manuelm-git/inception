@@ -6,28 +6,56 @@ services:
       - wordpress
       - mariadb
     ports:
-      - "80:80"
       - "443:443"
+      - "80:80"
     volumes:
-      - ./web:/var/www/html
+      - wp_data:/var/www/html
     networks:
       - inception
+    restart: always
+
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
+    ports: 
+      - "9000"
     depends_on:
       - mariadb
     volumes:
-    - ./web:/var/www/html
+      - wp_data:/var/www/html
     networks:
       - inception
+    restart: always
+    env_file:
+      - .env
+
   mariadb:
-    build: requirements/mariadb/.
+    build:
+      context: requirements/mariadb
     container_name: mariadb
+    ports:
+      - "3306"
+    env_file:
+      - .env
     volumes:
-      - ./database:/var/lib/mysql
+      - db_data:/var/lib/mysql
     networks:
       - inception
+    restart: always
+
+volumes:
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/manumart/Desktop/maneleh42/inception/data/web
+      o: bind
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/manumart/Desktop/maneleh42/inception/data/database
+      o: bind
 
 networks:
   inception:
