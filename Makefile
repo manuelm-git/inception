@@ -30,4 +30,8 @@ fclean:
 	@echo "Deleting /home/manumart/data/web and /home/manumart/data/database..."
 	sudo rm -rf /home/manumart/data/web
 	sudo rm -rf /home/manumart/data/database
+	@if [ "$(docker ps -qa)" ]; then docker stop $(docker ps -qa); docker rm $(docker ps -qa); fi
+	@if [ "$(docker images -qa)" ]; then docker rmi -f $(docker images -qa); fi
+	@if [ "$(docker volume ls -q)" ]; then docker volume rm $(docker volume ls -q); fi
+	@if [ "$(docker network ls -q | grep -v 'bridge\|host\|none')" ]; then docker network rm $(docker network ls -q | grep -v 'bridge\|host\|none'); fi
 	@echo "Cleanup complete."
