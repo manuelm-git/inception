@@ -17,7 +17,6 @@ if [ -f /docker-entrypoint-initdb.d/init.sql ]; then
     cat /docker-entrypoint-initdb.d/init.sql
 else
     echo "Error: /docker-entrypoint-initdb.d/init.sql not found!"
-    exit 1
 fi
 
 # Start MariaDB and ensure it processes the init.sql file

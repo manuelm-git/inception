@@ -26,6 +26,7 @@ restart:
 
 fclean:
 	@echo "Stopping and removing all containers, volumes, and networks..."
+	docker-compose -f srcs/docker-compose.yml stop
 	docker-compose -f srcs/docker-compose.yml down --volumes --remove-orphans
 	@echo "Deleting /home/manumart/data/web and /home/manumart/data/database..."
 	sudo rm -rf /home/manumart/data/web

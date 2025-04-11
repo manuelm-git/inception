@@ -38,6 +38,7 @@ if ! ./wp-cli.phar core is-installed --allow-root; then
         --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
         --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
         --allow-root
+	./wp-cli.phar user create "${WORDPRESS_DB_USER}" "${WORDPRESS_DB_EMAIL}" --user_pass="${WORDPRESS_DB_PASSWORD}" --role=author --allow-root
 else
     echo "WordPress is already installed."
 fi
